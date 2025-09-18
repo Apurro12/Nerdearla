@@ -29,7 +29,6 @@ async def load_tools():
 
 async def load_model():
     chat_model = init_chat_model("gpt-4o-mini").bind_tools(await load_tools())
-
     return chat_model
 
 
@@ -38,12 +37,6 @@ class State(TypedDict):
     messages: Annotated[list, add_messages]
 
 graph_builder = StateGraph(State)
-
-tool = TavilySearch(max_results=2)
-tools = [tool]
-
-#llm = init_chat_model("gpt-4o-mini")
-#llm_with_tools = llm.bind_tools(tools)
 
 async def chatbot(state: State):
     model = await load_model()
@@ -70,6 +63,6 @@ graph = graph_builder.compile()
 
 if __name__ == "__main__":
     response = asyncio.run(
-        graph.ainvoke({"messages": ["Search in tavily what is the capital of France"]})
+        graph.ainvoke({"messages": ["Use the tools to calculate 5+7."]})
     )
     print(response)

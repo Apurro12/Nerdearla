@@ -17,10 +17,10 @@ class State(TypedDict):
     messages: Annotated[list, add_messages]
     accepted_tool_call: Literal["y", "n", None]
 
-
+mcp_server = "images"
 client = MultiServerMCPClient(
     {
-        "calculus_server": {
+        mcp_server: {
             "url": "http://127.0.0.1:8000/mcp",
             "transport": "streamable_http",
         },
@@ -31,16 +31,16 @@ client = MultiServerMCPClient(
 # Define agent nodes
 async def chatbot(state: State):
     # Load tools within a managed session
-    async with client.session("calculus_server") as session:
+    async with client.session(mcp_server) as session:
         tools = await load_mcp_tools(session)
 
         # Create model with tools
-        model = init_chat_model("gpt-4o").bind_tools(tools)
+        model = init_chat_model("gpt-4o-mini").bind_tools(tools)
     
         return {"messages": [model.invoke(state["messages"])]}
 
 async def tools(state: State):
-    async with client.session("calculus_server") as session:
+    async with client.session(mcp_server) as session:
         tools = await load_mcp_tools(session)
         tool_node = ToolNode(tools=tools)
         return await tool_node.ainvoke(state)
@@ -176,7 +176,6 @@ async def consume_agent_responses():
 
 
     print("Agent execution completed!")
-
 
 
 

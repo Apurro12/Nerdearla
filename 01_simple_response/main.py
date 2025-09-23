@@ -49,33 +49,35 @@ def execute_sql_query(sql_query, db_path="data.db"):
         logging.error(f"Error executing SQL Query: {e}")
         return None, str(e)
 
-def create_visualization(df, query_type):
-    plt.close()
+def create_visualization(df, query_type, plot_type = "bar"):
+    if plot_type == "bar":
+            
+        plt.close()
 
-    if (len(df) == 1):
-        return df.to_string()
+        if (len(df) == 1):
+            return df.to_string()
 
-    if df.empty:
-        plt.text(0.5, 0.5, 'No data found', ha='center', va='center')
-        plt.title("No Results")
-    else:
-        if len(df.columns) >= 2 and df.dtypes.iloc[1] in ['int64', 'float64']:
-            df.plot(x=df.columns[0], y=df.columns[1], kind='bar')
-            plt.title("Query Results")
-            plt.xticks(rotation=45)
+        if df.empty:
+            plt.text(0.5, 0.5, 'No data found', ha='center', va='center')
+            plt.title("No Results")
         else:
-            plt.text(0.1, 0.5, df.to_string(), fontfamily='monospace', fontsize=8)
-            plt.title("Query Results (Table)")
-            plt.axis('off')
-    
-    plt.tight_layout()
-    fig = plt.gcf()
-    
-    buf = io.BytesIO()
-    fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
-    buf.seek(0)
-    
-    pil_img = Image.open(buf)
+            if len(df.columns) >= 2 and df.dtypes.iloc[1] in ['int64', 'float64']:
+                df.plot(x=df.columns[0], y=df.columns[1], kind='bar')
+                plt.title("Query Results")
+                plt.xticks(rotation=45)
+            else:
+                plt.text(0.1, 0.5, df.to_string(), fontfamily='monospace', fontsize=8)
+                plt.title("Query Results (Table)")
+                plt.axis('off')
+        
+        plt.tight_layout()
+        fig = plt.gcf()
+        
+        buf = io.BytesIO()
+        fig.savefig(buf, format='png', dpi=100, bbox_inches='tight')
+        buf.seek(0)
+        
+        pil_img = Image.open(buf)
     return gr.Image(pil_img)
 
 def chat_with_plot(message, history):

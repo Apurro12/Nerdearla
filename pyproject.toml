@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "google-cloud-storage>=3.4.0",
     "gradio>=5.43.1",
     "ipython>=9.4.0",
     "langchain>=0.3.27",

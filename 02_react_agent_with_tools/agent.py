@@ -1,9 +1,10 @@
 from langgraph.prebuilt import create_react_agent
-from tools_langchain import multiply
+from tools_langchain import multiply,send_wp_message
+import time 
 
 agent = create_react_agent(
     "openai:gpt-4.1-nano",
-    tools = [multiply],
+    tools = [multiply, send_wp_message],
 )
 
 def chat(message, history):
@@ -11,6 +12,7 @@ def chat(message, history):
 
     response = ""
     for j in agent.stream(input = {"messages": [{"role": "user", "content": message}]}):
+        time.sleep(1)
         
         if "agent" in j:
             tool_calls = j["agent"]["messages"][0].tool_calls
@@ -36,6 +38,7 @@ async def chat_async(message, history):
 
     response = ""
     async for j in agent.astream(input = {"messages": [{"role": "user", "content": message}]}):
+        time.sleep(1)
         
         if "agent" in j:
             tool_calls = j["agent"]["messages"][0].tool_calls

@@ -34,7 +34,7 @@ async def chatbot(state: State):
     
         return {"messages": [model.invoke(state["messages"])]}
 
-async def tools_node(state: State):
+async def tools(state: State):
     async with client.session("calculus_server") as session:
         tools = await load_mcp_tools(session)
         tool_node = ToolNode(tools=tools)
@@ -42,11 +42,11 @@ async def tools_node(state: State):
 
 # Build graph
 graph_builder = StateGraph(State)
+graph_builder.add_edge(START, "chatbot")
 graph_builder.add_node("chatbot", chatbot)
-graph_builder.add_node("tools", tools_node)
+graph_builder.add_node("tools", tools)
 graph_builder.add_conditional_edges("chatbot", tools_condition)
 graph_builder.add_edge("tools", "chatbot")
-graph_builder.add_edge(START, "chatbot")
 graph = graph_builder.compile()
 
 async def run_agent(message: str, _history = []):

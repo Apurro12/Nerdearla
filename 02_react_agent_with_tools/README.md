@@ -3,7 +3,6 @@
 1) Here we are going to create an actual agent that can do tool calling
 2) The current implementation doesn't have memory, and just have one not so usefull tool
 3) In the next step we are going to include the memory
-
 4) This is doing an sinc response, what If I want an async response?
 
 

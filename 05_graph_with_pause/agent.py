@@ -35,7 +35,7 @@ async def chatbot(state: State):
         tools = await load_mcp_tools(session)
 
         # Create model with tools
-        model = init_chat_model("gpt-4o-mini").bind_tools(tools)
+        model = init_chat_model("gpt-5").bind_tools(tools)
     
         return {"messages": [model.invoke(state["messages"])]}
 
@@ -98,7 +98,7 @@ graph_builder.add_edge("tools", "chatbot")
 
 checkpointer = InMemorySaver()
 graph = graph_builder.compile(
-#    checkpointer=checkpointer
+    checkpointer=checkpointer
 )
 
 # The compiled graph is something like this

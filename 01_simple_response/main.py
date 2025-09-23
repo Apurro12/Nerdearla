@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import sqlite3
 import io
+import os
 from PIL import Image
 from langchain_community.llms import OpenAI
 from langchain.prompts import PromptTemplate
@@ -38,8 +39,12 @@ def setup_llm():
     prompt = PromptTemplate(template=prompt_template, input_variables=["question"])
     return LLMChain(llm=llm, prompt=prompt)
 
-def execute_sql_query(sql_query, db_path="data.db"):
+def execute_sql_query(sql_query, db_path=None):
     try:
+        if db_path is None:
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            parent_dir = os.path.dirname(script_dir)
+            db_path = os.path.join(parent_dir, "data.db")
         conn = sqlite3.connect(db_path)
         df = pd.read_sql_query(sql_query, conn)
         logging.info(f"SQL Query executed successfully: {df}")

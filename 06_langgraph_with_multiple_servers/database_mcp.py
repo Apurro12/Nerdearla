@@ -4,10 +4,6 @@ import dotenv
 import json 
 import sqlite3
 import pandas as pd
-import io
-from PIL import Image
-import gradio as gr
-import base64
 import logging 
 from langchain_community.llms import OpenAI
 from langchain.prompts import PromptTemplate
@@ -87,4 +83,3 @@ def transform_natural_languaje_to_sql(user_question: str) -> str:
     return sql_query
 
 mcp.run(transport="streamable-http")
-#mcp.run(transport="stdio")

@@ -17,7 +17,7 @@ class State(TypedDict):
     messages: Annotated[list, add_messages]
     accepted_tool_call: Literal["y", "n", None]
 
-mcp_server = "images"
+mcp_server = "mcp_server"
 client = MultiServerMCPClient(
     {
         mcp_server: {
@@ -36,8 +36,8 @@ async def chatbot(state: State):
 
         # Create model with tools
         model = init_chat_model("gpt-4o-mini").bind_tools(tools)
-    
-        return {"messages": [model.invoke(state["messages"])]}
+        response = await model.ainvoke(state["messages"])
+        return {"messages": [response]}
 
 async def tools(state: State):
     async with client.session(mcp_server) as session:

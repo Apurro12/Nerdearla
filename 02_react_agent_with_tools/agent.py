@@ -1,10 +1,10 @@
 from langgraph.prebuilt import create_react_agent
-from tools_langchain import multiply,send_wp_message
+from tools_langchain import multiply
 import time 
 
 agent = create_react_agent(
     "openai:gpt-4.1-nano",
-    tools = [multiply, send_wp_message],
+    tools = [multiply],
 )
 
 def chat(message, history):

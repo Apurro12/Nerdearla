@@ -11,3 +11,9 @@ wheels/
 
 # sqlite files
 *.db
+
+# langgraph
+.langgraph_api/
+
+# .env
+.env

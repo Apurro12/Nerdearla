@@ -1,0 +1,6 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "decoupled_yield": "./decoupled_yield.py:graph"
+  }
+}

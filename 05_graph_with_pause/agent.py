@@ -7,7 +7,6 @@ from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode
 from langchain_mcp_adapters.tools import load_mcp_tools
 from langgraph.checkpoint.memory import InMemorySaver
-import asyncio
 import langgraph.types
 from langchain_core.runnables import RunnableConfig
 from langgraph.types import interrupt, Command
@@ -36,8 +35,9 @@ async def chatbot(state: State):
 
         # Create model with tools
         model = init_chat_model("gpt-4o").bind_tools(tools)
-    
-        return {"messages": [model.invoke(state["messages"])]}
+        response = await model.ainvoke(state["messages"])
+
+        return {"messages": [response]}
 
 async def tools(state: State):
     async with client.session("calculus_server") as session:
@@ -98,7 +98,7 @@ graph_builder.add_edge("tools", "chatbot")
 
 checkpointer = InMemorySaver()
 graph = graph_builder.compile(
-    checkpointer=checkpointer
+    checkpointer=checkpointer # To use langgraph studio, you need to comment this line
 )
 
 # The compiled graph is something like this
@@ -155,31 +155,3 @@ async def run_agent_with_stop(message:str, history: list):
         command = Command(resume=message)
         async for yielded_data in run_agent("", command):
             yield yielded_data
-
-
-
-
-async def consume_agent_responses():
-    """Example of how to consume yielded responses from outside"""
-    print("Starting agent execution...")
-    async for yielded_data in run_agent("Use the tools to calculate 5+7."):
-        print("---")
-        print(f"{yielded_data}")
-        print("---")
-
-
-    command = Command(resume="n")
-    async for yielded_data in graph.astream(command, config):
-        print("---")
-        print(f"{yielded_data}")
-        print("---")
-
-
-    print("Agent execution completed!")
-
-
-
-
-#if __name__ == "__main__":
-# {"messages":"Use the tools to calculate 5+7."}
-#    asyncio.run(consume_agent_responses())

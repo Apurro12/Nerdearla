@@ -9,3 +9,9 @@ There are three different implementations of the react_agent
 3) decoupled_yield.py
 
 where each one varies the way the agent connect to the MCP server, it is worth to check the differences betwheen each one
+
+
+We can check the  graph execution using LangGraph Studio, for do that I need to execute in the current folder
+* uv run langgraph dev
+
+![alt text](../07_images/04_studio.png)

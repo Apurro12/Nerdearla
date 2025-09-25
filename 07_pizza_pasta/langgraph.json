@@ -1,6 +1,6 @@
 {
   "dependencies": ["."],
   "graphs": {
-    "decoupled_yield": "./src/graph.py:graph"
+    "decoupled_yield": "./agent.py:graph"
   }
 }

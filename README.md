@@ -165,7 +165,7 @@ Demonstrates deployment of multiple specialized MCP servers for different capabi
 **Exercise**: Implement simultaneous connection to multiple MCP servers using `AsyncExitStack` from `contextlib`.
 
 ### 07 - Images
-**Location**: `07_images/`
+**Location**: `00_images/`
 
 Contains workshop screenshots and visual documentation.
 

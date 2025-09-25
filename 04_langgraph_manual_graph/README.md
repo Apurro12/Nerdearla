@@ -14,4 +14,4 @@ where each one varies the way the agent connect to the MCP server, it is worth t
 We can check the  graph execution using LangGraph Studio, for do that I need to execute in the current folder
 * uv run langgraph dev
 
-![alt text](../07_images/04_studio.png)
+![alt text](../00_images/04_studio.png)
